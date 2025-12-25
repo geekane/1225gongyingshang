@@ -1,0 +1,11 @@
+name = "srm-backend"
+main = "worker.js"
+compatibility_date = "2023-12-01"
+
+[vars]
+JWT_SECRET = "123456"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "1225gongying"
+database_id = "55d145c2-81ec-46c0-9c70-e013522f2542"

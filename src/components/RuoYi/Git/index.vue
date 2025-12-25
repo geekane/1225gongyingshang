@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-const url = ref('https://gitee.com/y_project/RuoYi-Vue')
+const url = ref('http://1225gy.jingchaowan.dpdns.org/git')
 
 function goto() {
   window.open(url.value)

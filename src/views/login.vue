@@ -55,6 +55,9 @@
         <div style="float: right;" v-if="register">
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
+        <div style="float: left;">
+          <router-link class="link-type" :to="'/register-supplier'">供应商注册</router-link>
+        </div>
       </el-form-item>
     </el-form>
     <!--  底部  -->
@@ -89,13 +92,13 @@ const loginForm = ref({
 const loginRules = {
   username: [{ required: true, trigger: "blur", message: "请输入您的账号" }],
   password: [{ required: true, trigger: "blur", message: "请输入您的密码" }],
-  code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+  code: [{ required: false, trigger: "change", message: "请输入验证码" }]
 }
 
 const codeUrl = ref("")
 const loading = ref(false)
 // 验证码开关
-const captchaEnabled = ref(true)
+const captchaEnabled = ref(false)
 // 注册开关
 const register = ref(false)
 const redirect = ref(undefined)
@@ -141,13 +144,15 @@ function handleLogin() {
 }
 
 function getCode() {
-  getCodeImg().then(res => {
+  // 暂时禁用验证码，方便测试
+  captchaEnabled.value = false;
+  /* getCodeImg().then(res => {
     captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
     if (captchaEnabled.value) {
       codeUrl.value = "data:image/gif;base64," + res.img
       loginForm.value.uuid = res.uuid
     }
-  })
+  }) */
 }
 
 function getCookie() {
