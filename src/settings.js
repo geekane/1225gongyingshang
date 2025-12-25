@@ -52,6 +52,6 @@ export default {
   /**
    * 底部版权文本内容
    */
-  footerContent: 'Copyright © 2018-2025 RuoYi. All Rights Reserved.'
+  footerContent: '创建·竞潮玩·供应商管理系统',
 }
 

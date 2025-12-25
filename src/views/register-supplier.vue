@@ -68,6 +68,12 @@
             <el-form-item label="联系人邮箱" prop="email">
               <el-input v-model="registerForm.email" placeholder="用于接收账号密码" />
             </el-form-item>
+            <el-form-item label="邮箱验证码" prop="emailCode">
+              <el-input v-model="registerForm.emailCode" placeholder="请输入验证码" style="width: 200px; margin-right: 10px;" />
+              <el-button @click="handleSendCode" :disabled="codeTimer > 0">
+                {{ codeTimer > 0 ? `${codeTimer}s后重新获取` : '获取验证码' }}
+              </el-button>
+            </el-form-item>
           </el-form>
           <div class="btn-group">
             <el-button @click="prevStep">上一步</el-button>
@@ -92,11 +98,12 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { getCompanyInfo, registerSupplier } from "@/api/srm/supplier";
+import { getCompanyInfo, registerSupplier, sendEmailCode } from "@/api/srm/supplier";
 
 const router = useRouter();
 const active = ref(0);
 const formRef = ref(null);
+const codeTimer = ref(0);
 
 const registerForm = ref({
   subjectType: 'ENTERPRISE',
@@ -105,14 +112,16 @@ const registerForm = ref({
   companyName: '',
   legalPerson: '',
   contactName: '',
-  email: ''
+  email: '',
+  emailCode: ''
 });
 
 const rules = {
   socialCode: [{ required: true, message: '请输入社会信用代码', trigger: 'blur' }],
   companyName: [{ required: true, message: '请获取公司信息', trigger: 'change' }],
   contactName: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
-  email: [{ required: true, message: '请输入邮箱', trigger: 'blur', type: 'email' }]
+  email: [{ required: true, message: '请输入邮箱', trigger: 'blur', type: 'email' }],
+  emailCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
 };
 
 const nextStep = () => {
@@ -141,13 +150,25 @@ const fetchCompanyInfo = () => {
   });
 };
 
+const handleSendCode = () => {
+  if (!registerForm.value.email) {
+    ElMessage.warning('请先输入邮箱');
+    return;
+  }
+  sendEmailCode(registerForm.value.email, 'register').then(() => {
+    ElMessage.success('验证码已发送至您的邮箱');
+    codeTimer.value = 60;
+    const timer = setInterval(() => {
+      codeTimer.value--;
+      if (codeTimer.value <= 0) clearInterval(timer);
+    }, 1000);
+  });
+};
+
 const handleRegister = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       registerSupplier(registerForm.value).then(res => {
-        nextStep();
-      }).catch(() => {
-        // 模拟提交成功
         nextStep();
       });
     }

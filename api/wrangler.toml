@@ -4,6 +4,8 @@ compatibility_date = "2023-12-01"
 
 [vars]
 JWT_SECRET = "123456"
+RESEND_API_KEY = "re_jaJUSf5f_Dxsaxb6Bs9EeiLrFoDcbVVr7"
+RESEND_FROM = "SRM系统 <no-reply@jingchaowan.dpdns.org>"
 
 [[d1_databases]]
 binding = "DB"

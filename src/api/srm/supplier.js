@@ -16,3 +16,12 @@ export function registerSupplier(data) {
     data: data
   })
 }
+
+// 发送邮箱验证码
+export function sendEmailCode(email, type) {
+  return request({
+    url: '/sendEmailCode',
+    method: 'post',
+    data: { email, type }
+  })
+}

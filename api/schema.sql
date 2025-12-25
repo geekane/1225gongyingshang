@@ -27,3 +27,13 @@ CREATE TABLE IF NOT EXISTS srm_supplier_apply (
   status TEXT DEFAULT '0', -- 0: 待审核
   create_time DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 邮箱验证码表
+CREATE TABLE IF NOT EXISTS sys_email_code (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT NOT NULL,
+  code TEXT NOT NULL,
+  type TEXT, -- login, register, resetPwd
+  expire_time DATETIME NOT NULL,
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
